@@ -1,11 +1,537 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import heroPoster from '../../img/wallpaper/wallpaper.jpg';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const navItems = [
+	{ label: '26赛季舵轮大小yaw哨兵', href: '#season-26' },
+	{ label: '25赛季双云台哨兵', href: '#season-25-dual' },
+	{ label: '25赛季哨兵机器人', href: '#season-25-sentry' },
+	{ label: '六足机器人', href: '#hexapod' },
+];
+
+const projects = [
+	{
+		id: 'season-26',
+		title: '26赛季舵轮大小 Yaw 哨兵',
+		meta: '驱动 / 姿态 / 结构迭代',
+		description: '围绕舵轮底盘与大小 yaw 结构做整机整合，强调高速响应、抗扰与赛季化快速换装。',
+		chips: ['舵轮底盘', 'Yaw 控制', '赛季主力'],
+	},
+	{
+		id: 'season-25-dual',
+		title: '25赛季双云台哨兵',
+		meta: '云台 / 视觉 / 火控协同',
+		description: '双云台方案用于分工处理观测与跟随，形成更稳定的瞄准、跟踪与姿态解耦逻辑。',
+		chips: ['双云台', '视觉链路', '协同控制'],
+	},
+	{
+		id: 'season-25-sentry',
+		title: '25赛季哨兵机器人',
+		meta: '整机 / 电控 / 任务流',
+		description: '以任务执行为主线搭建的哨兵平台，覆盖供电、通信、机械布局与基础联调。',
+		chips: ['哨兵平台', '联调', '任务执行'],
+	},
+	{
+		id: 'hexapod',
+		title: '六足机器人',
+		meta: '运动学 / 仿生 / 验证',
+		description: '面向复杂地形的六足运动平台，突出步态控制、结构验证与实机动作表现。',
+		chips: ['六足步态', '仿生结构', '实验平台'],
+	},
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="硬核科技作品集首页">
+	<main class="page">
+		<section class="hero" id="hero-demo">
+			<div class="hero-media">
+				<video
+					autoplay
+					loop
+					muted
+					playsinline
+					poster={heroPoster.src}
+					aria-label="主页背景视频"
+				>
+					<source src="/hero-bg.webm" type="video/webm" />
+					<source src="/hero-bg.mp4" type="video/mp4" />
+				</video>
+				<div class="hero-mask"></div>
+			</div>
+
+			<header class="topbar">
+				<div class="brand">
+					<span class="brand-dot"></span>
+					<div>
+						<p>HARDWARE PORTFOLIO</p>
+						<strong>Sentinel Systems Lab</strong>
+					</div>
+				</div>
+
+				<nav aria-label="项目导航" class="nav">
+					{navItems.map((item) => (
+						<a href={item.href}>{item.label}</a>
+					))}
+				</nav>
+			</header>
+
+			<div class="hero-content">
+				<p class="eyebrow">ALL-TERRAIN CHASSIS DEMO FEED</p>
+				<h1>用代码驱动物理世界</h1>
+				<p class="lede">RoboMaster 2025 赛季 | 嵌入式开发工程师</p>
+				<div class="hero-actions">
+					<a class="primary" href="#projects">查看硬件项目</a>
+					<a class="ghost" href="#season-26">进入 26 赛季</a>
+				</div>
+			</div>
+
+			<div class="telemetry">
+				<div>
+					<span>STATUS</span>
+					<strong>LIVE PREVIEW</strong>
+				</div>
+				<div>
+					<span>DRIVE MODE</span>
+					<strong>OMNI + YAW</strong>
+				</div>
+				<div>
+					<span>SEASONS</span>
+					<strong>2025-2026</strong>
+				</div>
+			</div>
+		</section>
+
+		<section class="projects" id="projects">
+			<div class="section-head">
+				<p>SEASONAL HARDWARE PROGRAMS</p>
+				<h2>用毛玻璃卡片展示不同赛季的工程迭代</h2>
+			</div>
+
+			<div class="grid">
+				{projects.map((project) => (
+					<article class="card" id={project.id}>
+						<div class="card-top">
+							<p>{project.meta}</p>
+							<span>PROJECT / {project.id.toUpperCase()}</span>
+						</div>
+						<h3>{project.title}</h3>
+						<p class="description">{project.description}</p>
+						<div class="chips">
+							{project.chips.map((chip) => (
+								<span>{chip}</span>
+							))}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	</main>
 </Layout>
+
+<style>
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	.page {
+		position: relative;
+		overflow-x: hidden;
+		padding: 0;
+	}
+
+	.hero {
+		position: relative;
+		min-height: 100svh;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 1.2rem 3vw 2.4rem;
+		overflow: hidden;
+	}
+
+	.hero-media,
+	.hero-media video,
+	.hero-mask {
+		position: absolute;
+		inset: 0;
+	}
+
+	.hero-media video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		opacity: 0.6;
+		filter: saturate(1.02) brightness(0.7) contrast(1.05);
+		transform: scale(1.04);
+	}
+
+	.hero-mask {
+		background:
+			linear-gradient(180deg, rgba(3, 8, 18, 0.18) 0%, rgba(2, 6, 15, 0.72) 70%, rgba(2, 6, 15, 0.96) 100%),
+			radial-gradient(circle at 16% 22%, rgba(132, 173, 226, 0.2), transparent 34%),
+			radial-gradient(circle at 76% 13%, rgba(255, 177, 177, 0.2), transparent 30%);
+	}
+
+	.topbar {
+		position: relative;
+		z-index: 3;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		padding: 0.65rem 0.9rem;
+		border: 1px solid rgba(219, 231, 255, 0.16);
+		border-radius: 999px;
+		background: rgba(6, 12, 24, 0.34);
+		backdrop-filter: blur(16px);
+		animation: enter 700ms ease both;
+	}
+
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+	}
+
+	.brand p,
+	.brand strong,
+	.section-head p,
+	.card-top p,
+	.card-top span,
+	.eyebrow,
+	.lede,
+	.description,
+	.telemetry span,
+	.telemetry strong {
+		margin: 0;
+	}
+
+	.brand p,
+	.eyebrow,
+	.section-head p,
+	.card-top span {
+		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+		font-size: 0.7rem;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+		color: rgba(227, 238, 255, 0.6);
+	}
+
+	.brand strong {
+		display: block;
+		font-size: 0.95rem;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+	}
+
+	.brand-dot {
+		width: 0.7rem;
+		height: 0.7rem;
+		border-radius: 999px;
+		background: radial-gradient(circle, #ebf6ff 0%, #90cbff 90%);
+		box-shadow: 0 0 24px rgba(146, 201, 255, 0.8);
+	}
+
+	.nav {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.4rem;
+	}
+
+	.nav a {
+		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+		padding: 0.45rem 0.8rem;
+		border-radius: 999px;
+		border: 1px solid transparent;
+		background: transparent;
+		color: rgba(237, 243, 255, 0.58);
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		text-decoration: none;
+		white-space: nowrap;
+		transition:
+			transform 180ms ease,
+			color 180ms ease,
+			border-color 180ms ease,
+			background 180ms ease;
+	}
+
+	.nav a:hover {
+		color: #f4f8ff;
+		border-color: rgba(208, 224, 255, 0.26);
+		background: rgba(229, 239, 255, 0.08);
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 2;
+		max-width: min(64rem, 100%);
+		margin-top: auto;
+		padding-bottom: min(6vh, 3rem);
+		animation: rise 850ms ease both;
+	}
+
+	.eyebrow {
+		margin-bottom: 0.95rem;
+		color: rgba(232, 239, 255, 0.76);
+	}
+
+	h1 {
+		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+		margin: 0;
+		max-width: 10ch;
+		font-size: clamp(2.7rem, 7vw, 6rem);
+		line-height: 0.94;
+		letter-spacing: -0.045em;
+		text-wrap: balance;
+		text-transform: uppercase;
+	}
+
+	.lede {
+		max-width: 38rem;
+		margin-top: 1rem;
+		font-size: 0.98rem;
+		line-height: 1.85;
+		color: rgba(223, 232, 248, 0.76);
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+		margin-top: 1.4rem;
+	}
+
+	.primary,
+	.ghost {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.78rem 1.1rem;
+		border-radius: 999px;
+		text-decoration: none;
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		transition:
+			transform 180ms ease,
+			border-color 180ms ease,
+			background 180ms ease,
+			color 180ms ease;
+	}
+
+	.primary {
+		color: #06121b;
+		background: linear-gradient(135deg, #eff7ff 0%, #bddfff 100%);
+		box-shadow: 0 14px 40px rgba(99, 151, 218, 0.38);
+	}
+
+	.ghost {
+		border: 1px solid rgba(227, 237, 255, 0.26);
+		color: rgba(246, 250, 255, 0.88);
+		background: rgba(255, 255, 255, 0.06);
+	}
+
+	.primary:hover,
+	.ghost:hover {
+		transform: translateY(-2px);
+	}
+
+	.telemetry {
+		position: relative;
+		z-index: 2;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.9rem;
+		margin-top: 0.6rem;
+		animation: rise 900ms ease both;
+	}
+
+	.telemetry div {
+		padding: 0.85rem 1rem;
+		border: 1px solid rgba(199, 216, 247, 0.2);
+		border-radius: 0.75rem;
+		background: rgba(7, 15, 29, 0.38);
+		backdrop-filter: blur(12px);
+	}
+
+	.telemetry span {
+		display: block;
+		font-size: 0.64rem;
+		letter-spacing: 0.2em;
+		color: rgba(224, 235, 255, 0.58);
+		text-transform: uppercase;
+	}
+
+	.telemetry strong {
+		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+		display: block;
+		margin-top: 0.2rem;
+		font-size: 0.95rem;
+		letter-spacing: 0.08em;
+		color: #f4f9ff;
+	}
+
+	.projects {
+		position: relative;
+		z-index: 2;
+		padding: 3.2rem 3vw 4rem;
+		background:
+			linear-gradient(180deg, rgba(2, 6, 15, 0.86) 0%, rgba(2, 7, 16, 0.98) 100%),
+			radial-gradient(circle at 18% -2%, rgba(102, 139, 194, 0.2), transparent 44%);
+	}
+
+	.section-head {
+		max-width: 46rem;
+		margin: 0 auto 1.4rem;
+	}
+
+	.section-head h2 {
+		margin: 0.6rem 0 0;
+		font-size: clamp(1.8rem, 3.2vw, 3.1rem);
+		line-height: 1.12;
+		letter-spacing: -0.03em;
+		text-wrap: balance;
+	}
+
+	.grid {
+		max-width: 84rem;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		gap: 1.05rem;
+	}
+
+	.card {
+		grid-column: span 6;
+		padding: 1.4rem 1.3rem 1.45rem;
+		border: 1px solid rgba(208, 224, 255, 0.18);
+		border-radius: 1.05rem;
+		background:
+			linear-gradient(180deg, rgba(20, 31, 50, 0.6), rgba(11, 18, 30, 0.82)),
+			radial-gradient(circle at top left, rgba(191, 219, 255, 0.14), transparent 42%);
+		backdrop-filter: blur(20px);
+		box-shadow:
+			0 20px 50px rgba(0, 0, 0, 0.25),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		transition: transform 250ms ease, border-color 250ms ease;
+	}
+
+	.card:hover {
+		transform: translateY(-3px);
+		border-color: rgba(228, 239, 255, 0.34);
+	}
+
+	.card-top {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		align-items: flex-start;
+	}
+
+	.card-top p {
+		font-size: 0.78rem;
+		letter-spacing: 0.15em;
+		color: rgba(187, 216, 255, 0.88);
+	}
+
+	.card h3 {
+		margin: 0.95rem 0 0.65rem;
+		font-size: clamp(1.28rem, 2.1vw, 1.65rem);
+		line-height: 1.2;
+		letter-spacing: -0.025em;
+	}
+
+	.description {
+		font-size: 0.95rem;
+		line-height: 1.72;
+		color: rgba(223, 231, 247, 0.78);
+	}
+
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin-top: 1.1rem;
+	}
+
+	.chips span {
+		padding: 0.4rem 0.68rem;
+		border-radius: 0.45rem;
+		border: 1px solid rgba(207, 224, 255, 0.14);
+		background: rgba(255, 255, 255, 0.03);
+		color: rgba(235, 243, 255, 0.75);
+		font-size: 0.76rem;
+		letter-spacing: 0.04em;
+	}
+
+	@keyframes enter {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (max-width: 1080px) {
+		.hero {
+			padding: 1rem 1rem 1.8rem;
+		}
+
+		.card {
+			grid-column: span 12;
+		}
+
+		.telemetry {
+			grid-template-columns: 1fr;
+			max-width: 36rem;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.topbar {
+			flex-direction: column;
+			align-items: flex-start;
+			border-radius: 1rem;
+		}
+
+		.nav {
+			justify-content: flex-start;
+		}
+
+		.nav a {
+			padding: 0.45rem 0.55rem;
+			font-size: 0.73rem;
+		}
+
+		h1 {
+			font-size: clamp(2.4rem, 15vw, 3.4rem);
+		}
+
+		.hero-content {
+			padding-bottom: 1.4rem;
+		}
+
+		.projects {
+			padding: 2.5rem 1rem 3rem;
+		}
+	}
+</style>
