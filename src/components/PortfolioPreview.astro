@@ -1,0 +1,127 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'work'>;
+	span?: 1 | 2 | 3 | 4;
+	rowSpan?: 1 | 2;
+	ratio?: 'square' | 'wide';
+	style?: string;
+}
+
+const { project, span = 1, rowSpan = 1, ratio = 'square', style } = Astro.props;
+const { data, id } = project;
+---
+
+	<li class:list={['preview-card', `col-span-${span}`, `row-span-${rowSpan}`, `ratio-${ratio}`]} style={`${ratio === 'wide' ? 'aspect-ratio: 3 / 2;' : ''}${style ? ` ${style}` : ''}`}>
+	<a class="card" href={`/work/${id}`}>
+	{(() => {
+		const parts = String(data.title).split(/\s+/).filter(Boolean);
+		const short = parts.slice(0, 3).join(' ');
+		return (<span class="title" title={data.title}>{short}</span>);
+	})()}
+	<span class="kicker">{new Date(data.publishDate).getFullYear()}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+	</a>
+	</li>
+
+<style>
+	.preview-card {
+		position: relative;
+		border-radius: 1.5rem;
+		overflow: hidden;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		aspect-ratio: 1 / 1;
+		box-shadow: var(--shadow-sm);
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.preview-card.ratio-wide {
+		aspect-ratio: 3 / 2;
+	}
+
+	.preview-card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		/* let aspect-ratio control height so previews stay near-square */
+		aspect-ratio: 1 / 1;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+		width: 100%;
+		height: 100%;
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+		/* Keep preview titles on one line where possible */
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.preview-card {
+			border-radius: 1.5rem;
+		}
+
+		.col-span-1 { grid-column: span 1; }
+		.col-span-2 { grid-column: span 2; aspect-ratio: 6 / 5; }
+		.col-span-3 { grid-column: span 3; aspect-ratio: 6 / 5; }
+		.col-span-4 { grid-column: span 4; aspect-ratio: 6 / 5; }
+
+		.row-span-1 { grid-row: span 1; }
+		.row-span-2 { grid-row: span 2; }
+
+		.title {
+			border-radius: 0.9375rem;
+			white-space: nowrap;
+		}
+	}
+
+@media (max-width: 420px) {
+    .title { white-space: normal; }
+}
+
+.kicker {
+	position: absolute;
+	top: 0.6rem;
+	left: 0.6rem;
+	font-family: var(--font-mono);
+	color: var(--accent-light);
+	font-size: 0.7rem;
+	background: rgba(0,0,0,0.25);
+	padding: 0.2rem 0.45rem;
+	border-radius: 0.35rem;
+	border: 1px solid rgba(255,255,255,0.03);
+}
+</style>

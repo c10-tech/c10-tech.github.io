@@ -1,0 +1,110 @@
+---
+import ContactCTA from '../components/ContactCTA.astro';
+import Hero from '../components/Hero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="关于 | 陈艺林 作品集" description="关于作者与工程背景">
+	<div class="stack gap-20">
+		<main class="wrapper about">
+			<Hero
+				title="关于我"
+				tagline="这里展示我的工程背景、赛事实践与设计方法。"
+			>
+				<img
+					width="1553"
+					height="873"
+					src="/assets/at-work.jpg"
+					alt="作者在工作现场"
+				/>
+			</Hero>
+
+			<section>
+				<h2 class="section-title">背景</h2>
+				<div class="content">
+					<p>
+						我专注于机器人平台的系统工程与嵌入式控制，从结构设计到控制算法、再到赛场调试都有深入实践。下面将简要介绍我的职业路径与核心能力。
+					</p>
+					<p>
+						在多个 RoboMaster 项目中担任控制与上装设计负责人，主导视觉跟踪模块、云台控制与底盘动力学调优工作，具备完整的软硬件协同验证流程。
+					</p>
+					<p>
+						我重视工程可复现性与代码可维护性，擅长将理论模型快速工程化为可运行系统，并通过数据驱动的方式持续优化性能。
+					</p>
+				</div>
+			</section>
+			<section>
+				<h2 class="section-title">教育与培训</h2>
+				<div class="content">
+					<p>Corporis voluptates tenetur laudantium.</p>
+				</div>
+			</section>
+			<section>
+				<h2 class="section-title">技能</h2>
+				<div class="content">
+					<p>嵌入式系统、运动学、控制工程、3D建模与系统集成</p>
+				</div>
+			</section>
+		</main>
+
+		<ContactCTA />
+	</div>
+</BaseLayout>
+
+<style>
+	.about {
+		display: flex;
+		flex-direction: column;
+		gap: 3.5rem;
+	}
+
+	img {
+		margin-top: 1.5rem;
+		border-radius: 1.5rem;
+		box-shadow: var(--shadow-md);
+	}
+
+	section {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		color: var(--gray-200);
+	}
+
+	.section-title {
+		grid-column-start: 1;
+		font-size: var(--text-xl);
+		color: var(--gray-0);
+	}
+
+	.content {
+		grid-column: 2 / 4;
+	}
+
+	.content :global(a) {
+		text-decoration: 1px solid underline transparent;
+		text-underline-offset: 0.25em;
+		transition: text-decoration-color var(--theme-transition);
+	}
+
+	.content :global(a:hover),
+	.content :global(a:focus) {
+		text-decoration-color: currentColor;
+	}
+
+	@media (min-width: 50em) {
+		.about {
+			display: grid;
+			grid-template-columns: 1fr 60% 1fr;
+		}
+
+		.about > :global(:first-child) {
+			grid-column-start: 2;
+		}
+
+		section {
+			display: contents;
+			font-size: var(--text-lg);
+		}
+	}
+</style>

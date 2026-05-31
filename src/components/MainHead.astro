@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title?: string | undefined;
+	description?: string | undefined;
+}
+
+const {
+	title = '陈艺林 作品集',
+	description = '机器人、嵌入式与全栈工程的技术作品集',
+} = Astro.props;
+---
+
+<meta charset="UTF-8" />
+<meta name="description" property="og:description" content={description} />
+<meta name="viewport" content="width=device-width" />
+<meta name="generator" content={Astro.generator} />
+<title>{title}</title>
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+	rel="stylesheet"
+/
+>
+<script is:inline>
+	// Force default to dark industrial theme unless user explicitly chose 'light'.
+	try {
+		const stored = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+		if (stored === 'light') {
+			document.documentElement.classList.remove('theme-dark');
+		} else {
+			document.documentElement.classList.add('theme-dark');
+		}
+		// Persist changes when class toggles elsewhere in the app
+		if (typeof MutationObserver !== 'undefined' && typeof localStorage !== 'undefined') {
+			const observer = new MutationObserver(() => {
+				const dark = document.documentElement.classList.contains('theme-dark');
+				localStorage.setItem('theme', dark ? 'dark' : 'light');
+			});
+			observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+		}
+	} catch (e) {
+		// ignore in older browsers
+	}
+</script>

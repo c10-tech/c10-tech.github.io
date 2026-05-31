@@ -1,537 +1,807 @@
----
-import Layout from '../layouts/Layout.astro';
-import heroPoster from '../../img/wallpaper/wallpaper.jpg';
+﻿---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CallToAction from '../components/CallToAction.astro';
+import Grid from '../components/Grid.astro';
+import BentoCard from '../components/BentoCard.astro';
+import Icon from '../components/Icon.astro';
+import ContactCTA from '../components/ContactCTA.astro';
 
-const navItems = [
-	{ label: '26赛季舵轮大小yaw哨兵', href: '#season-26' },
-	{ label: '25赛季双云台哨兵', href: '#season-25-dual' },
-	{ label: '25赛季哨兵机器人', href: '#season-25-sentry' },
-	{ label: '六足机器人', href: '#hexapod' },
+const heroHighlights = [
+	{ label: '求职意向', value: '机器人 / 嵌入式开发' },
+	{ label: '教育背景', value: '成都大学 · 自动化 · 2027届' },
+	{ label: '证书', value: 'CET-4 / 计算机三级（网络技术）' },
+	{ label: '现居', value: '四川成都 / 广东深圳' },
 ];
 
-const projects = [
+const quickFacts = [
+	'大三在读，偏向机器人控制与底层开发',
+	'长期在 RoboMaster 场景里做整车协同、调参和赛前稳定性验证',
+	'临床外骨骼、四舵轮底盘、六足步态都做过从算法到工程落地',
+];
+
+const profileCards = [
 	{
-		id: 'season-26',
-		title: '26赛季舵轮大小 Yaw 哨兵',
-		meta: '驱动 / 姿态 / 结构迭代',
-		description: '围绕舵轮底盘与大小 yaw 结构做整机整合，强调高速响应、抗扰与赛季化快速换装。',
-		chips: ['舵轮底盘', 'Yaw 控制', '赛季主力'],
+		title: '系统级开发',
+		text: '熟悉 C/C++、STM32、GD32 与 FreeRTOS，能把多任务调度、看门狗和高频通信做成可交付系统。',
 	},
 	{
-		id: 'season-25-dual',
-		title: '25赛季双云台哨兵',
-		meta: '云台 / 视觉 / 火控协同',
-		description: '双云台方案用于分工处理观测与跟随，形成更稳定的瞄准、跟踪与姿态解耦逻辑。',
-		chips: ['双云台', '视觉链路', '协同控制'],
+		title: '运动控制',
+		text: '擅长四舵轮底盘、六足 DH 模型、多云台协同的正逆运动学与轨迹规划。',
 	},
 	{
-		id: 'season-25-sentry',
-		title: '25赛季哨兵机器人',
-		meta: '整机 / 电控 / 任务流',
-		description: '以任务执行为主线搭建的哨兵平台，覆盖供电、通信、机械布局与基础联调。',
-		chips: ['哨兵平台', '联调', '任务执行'],
+		title: '通信与架构',
+		text: '长期处理 CAN、UART、DMA 与跨板协同通信，重视稳定性、可维护性和调参记录。',
 	},
 	{
-		id: 'hexapod',
-		title: '六足机器人',
-		meta: '运动学 / 仿生 / 验证',
-		description: '面向复杂地形的六足运动平台，突出步态控制、结构验证与实机动作表现。',
-		chips: ['六足步态', '仿生结构', '实验平台'],
+		title: '机电协同',
+		text: '能独立完成 PCB 设计、硬件联调和简单机械结构设计，关注散热与大电流驱动瓶颈。',
+	},
+];
+
+const experienceCards = [
+	{
+		org: '四川大学华西生物医学大数据中心',
+		role: '实习生 · 柔性外骨骼机器人软硬件开发',
+		period: '2025.10 - 2026.03',
+		bullets: [
+			'参与柔性外骨骼机器人的软件开发、硬件联调与实验验证，将临床方案落到可演示原型机。',
+			'阅读英文论文并结合临床需求改写成可执行方案，形成面向患者的助力与检测流程。',
+			'到医院与志愿者采集步态数据，为识别、阈值和控制策略迭代提供实测样本。',
+		],
+	},
+	{
+		org: 'RoboMaster 校队 / 实验室',
+		role: '哨兵机器人负责人 · 电控 / 嵌入式开发',
+		period: '2024.09 - 至今',
+		bullets: [
+			'负责哨兵机器人与步兵机器人的整车控制系统开发，覆盖底盘、云台、发射机构与通信链路。',
+			'推进版本迭代、测试和赛前稳定性验证，持续补齐控制、通信和故障恢复的可量化结果。',
+			'沉淀调参记录和开发文档，便于交接和快速复现。',
+		],
+	},
+	{
+		org: '深圳瑞浒科技有限公司',
+		role: '嵌入式开发远程实习',
+		period: '2025.06 - 2025.09',
+		bullets: [
+			'参与消费级电动牙刷底层驱动开发，在资源受限 MCU 上完成外设适配、通信优化与联调支持。',
+			'用 IDLE + DMA 不定长接收和环形队列异步发送机制降低收发阻塞。',
+			'负责 PWM 波形生成和占空比、频率动态调节接口，支持硬件联调。',
+		],
+	},
+];
+
+const featuredProjects = [
+	{
+		title: '2026赛季哨兵机器人',
+		img: '/img/1 哨兵/26哨兵/26赛季第一版哨兵机器人.JPG',
+		href: '/work/rm26-sentry',
+		date: '2026',
+		span: 4,
+		rowSpan: 2,
+		ratio: 'square',
+		style: 'grid-column: 1 / span 4; grid-row: 1 / span 2;',
+		tags: 'Swerve Drive / FreeRTOS / 通信架构',
+	},
+	{
+		title: '六足机器人二次开发',
+		img: '/img/5 六足机器人/六足机器人1.jpg',
+		href: '/work/hexapod',
+		date: '2025',
+		span: 2,
+		rowSpan: 1,
+		ratio: 'wide',
+		style: 'grid-column: 5 / span 2; grid-row: 1 / span 1;',
+		tags: 'Kinematics / Tripod Gait',
+	},
+	{
+		title: '25双头哨兵机器人',
+		img: '/img/1 哨兵/25双头哨/25赛季第一版哨兵机器人.jpg',
+		href: '/work/rm25-sentry',
+		date: '2025',
+		span: 2,
+		rowSpan: 1,
+		ratio: 'square',
+		style: 'grid-column: 5 / span 2; grid-row: 2 / span 1;',
+		tags: 'RoboMaster / Hardware',
+	},
+];
+
+const awards = [
+	'2026 RoboMaster 高校联盟赛（四川站）二等奖',
+	'2026 RoboMaster 高校联盟赛哨兵机器人竞技三等奖',
+	'2025 RoboMaster 超级对抗赛全国赛三等奖',
+	'2025 RoboMaster 超级对抗赛中部赛区二等奖',
+	'2025 RoboMaster 超级对抗赛机器人竞技奖哨兵组三等奖',
+	'2025 RoboMaster 超级对抗赛机器人竞技奖步兵组三等奖',
+	'2025 RoboMaster 高校联盟赛（西南站）二等奖',
+	'2025 全国大学生电子设计竞赛（四川赛区）三等奖（队长）',
+];
+
+const skills = [
+	{
+		title: '底层与系统级开发',
+		items: ['C/C++', 'STM32 / GD32', 'FreeRTOS', '系统看门狗', '多任务调度'],
+	},
+	{
+		title: '机器人运动控制与算法',
+		items: ['四舵轮运动学', '六足 DH 模型', 'PID / 前馈补偿', 'PVT 样条', 'S 曲线'],
+	},
+	{
+		title: '通信与分布式架构',
+		items: ['CAN', 'UART', 'DMA', '位域压缩', '1400Hz 同步'],
+	},
+	{
+		title: '硬件驱动与机电协同',
+		items: ['原理图 / PCB', 'SolidWorks', '大电流驱动', '散热设计', '多传感器融合'],
 	},
 ];
 ---
-
-<Layout title="硬核科技作品集首页">
-	<main class="page">
-		<section class="hero" id="hero-demo">
-			<div class="hero-media">
-				<video
-					autoplay
-					loop
-					muted
-					playsinline
-					poster={heroPoster.src}
-					aria-label="主页背景视频"
-				>
-					<source src="/hero-bg.webm" type="video/webm" />
-					<source src="/hero-bg.mp4" type="video/mp4" />
-				</video>
-				<div class="hero-mask"></div>
+<BaseLayout title="陈艺林 | 机器人 / 嵌入式开发" description="机器人、嵌入式与控制方向的个人履历与代表项目。">
+	<div class="resume-page">
+		<section class="hero wrapper">
+			<div class="hero-copy">
+				<p class="eyebrow">Resume / Robotics / Embedded Systems</p>
+				<h1>陈艺林</h1>
+				<p class="lead">
+					面向机器人与嵌入式开发的工程型候选人，专注控制系统、运动学、通信架构与机电协同，把复杂系统做成可稳定交付的版本。
+				</p>
+				<div class="hero-highlights">
+					{
+						heroHighlights.map((item) => (
+							<div class="highlight-chip">
+								<span>{item.label}</span>
+								<strong>{item.value}</strong>
+							</div>
+						))
+					}
+				</div>
+				<div class="hero-actions">
+					<CallToAction href="/work/">
+						查看代表项目
+						<Icon icon="arrow-right" size="1.2em" />
+					</CallToAction>
+					<CallToAction href="mailto:chenyilin.yyds@qq.com">
+						联系我
+						<Icon icon="paper-plane-tilt" size="1.2em" />
+					</CallToAction>
+				</div>
 			</div>
 
-			<header class="topbar">
-				<div class="brand">
-					<span class="brand-dot"></span>
+			<aside class="profile-card">
+				<div class="profile-portrait" aria-hidden="true">
+					<div class="portrait-mark">陈艺林</div>
+					<div class="portrait-sub">Robotics / Embedded</div>
+				</div>
+				<div class="profile-meta">
 					<div>
-						<p>HARDWARE PORTFOLIO</p>
-						<strong>Sentinel Systems Lab</strong>
+						<span>电话</span>
+						<strong>13686853717</strong>
+					</div>
+					<div>
+						<span>邮箱</span>
+						<strong>chenyilin.yyds@qq.com</strong>
+					</div>
+					<div>
+						<span>博客</span>
+						<strong>c10-tech.github.io</strong>
+					</div>
+					<div>
+						<span>GitHub</span>
+						<strong>github.com/c10-tech</strong>
 					</div>
 				</div>
-
-				<nav aria-label="项目导航" class="nav">
-					{navItems.map((item) => (
-						<a href={item.href}>{item.label}</a>
-					))}
-				</nav>
-			</header>
-
-			<div class="hero-content">
-				<p class="eyebrow">ALL-TERRAIN CHASSIS DEMO FEED</p>
-				<h1>用代码驱动物理世界</h1>
-				<p class="lede">RoboMaster 2025 赛季 | 嵌入式开发工程师</p>
-				<div class="hero-actions">
-					<a class="primary" href="#projects">查看硬件项目</a>
-					<a class="ghost" href="#season-26">进入 26 赛季</a>
-				</div>
-			</div>
-
-			<div class="telemetry">
-				<div>
-					<span>STATUS</span>
-					<strong>LIVE PREVIEW</strong>
-				</div>
-				<div>
-					<span>DRIVE MODE</span>
-					<strong>OMNI + YAW</strong>
-				</div>
-				<div>
-					<span>SEASONS</span>
-					<strong>2025-2026</strong>
-				</div>
-			</div>
+			</aside>
 		</section>
 
-		<section class="projects" id="projects">
-			<div class="section-head">
-				<p>SEASONAL HARDWARE PROGRAMS</p>
-				<h2>用毛玻璃卡片展示不同赛季的工程迭代</h2>
-			</div>
+		<main class="wrapper stack gap-20 resume-main">
+			<section class="panel intro-grid">
+				<header class="section-header">
+					<h2>履历速览</h2>
+					<p>把简历里真正能落地的部分先摊开：背景、方向、能力与当前阶段。</p>
+				</header>
 
-			<div class="grid">
-				{projects.map((project) => (
-					<article class="card" id={project.id}>
-						<div class="card-top">
-							<p>{project.meta}</p>
-							<span>PROJECT / {project.id.toUpperCase()}</span>
-						</div>
-						<h3>{project.title}</h3>
-						<p class="description">{project.description}</p>
-						<div class="chips">
-							{project.chips.map((chip) => (
-								<span>{chip}</span>
-							))}
-						</div>
-					</article>
-				))}
-			</div>
-		</section>
-	</main>
-</Layout>
+				<div class="intro-cards">
+					{
+						profileCards.map((card) => (
+							<article class="mini-card">
+								<h3>{card.title}</h3>
+								<p>{card.text}</p>
+							</article>
+						))
+					}
+				</div>
+
+				<ul class="quick-facts">
+					{quickFacts.map((fact) => <li>{fact}</li>)}
+				</ul>
+			</section>
+
+			<section class="panel">
+				<header class="section-header section-header-split">
+					<div>
+						<h2>工作经历</h2>
+						<p>以时间线方式呈现真实的实习与校队经历，减少项目堆砌，突出岗位能力。</p>
+					</div>
+					<div class="section-badge">3 段经历 · 1 条主线</div>
+				</header>
+
+				<div class="timeline">
+					{
+						experienceCards.map((entry) => (
+							<article class="timeline-card">
+								<div class="timeline-head">
+									<div>
+										<p class="timeline-org">{entry.org}</p>
+										<h3>{entry.role}</h3>
+									</div>
+									<span class="timeline-period">{entry.period}</span>
+								</div>
+								<ul>
+									{entry.bullets.map((bullet) => <li>{bullet}</li>)}
+								</ul>
+							</article>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="panel">
+				<header class="section-header section-header-split">
+					<div>
+						<h2>个人项目</h2>
+						<p>从哨兵、六足到通信系统，保留最能代表工程能力的作品入口。</p>
+					</div>
+					<div class="section-badge">精选作品页</div>
+				</header>
+
+				<Grid variant="bento">
+					{
+						featuredProjects.map((project) => (
+							<BentoCard
+								title={project.title}
+								img={project.img}
+								href={project.href}
+								span={project.span as any}
+								rowSpan={project.rowSpan as any}
+								ratio={project.ratio as any}
+								style={project.style}
+								date={project.date}
+							>
+								<span class="preview-tags">{project.tags}</span>
+								<span class="read-more">查看 →</span>
+							</BentoCard>
+						))
+					}
+				</Grid>
+			</section>
+
+			<section class="panel">
+				<header class="section-header section-header-split">
+					<div>
+						<h2>技能矩阵</h2>
+						<p>这些能力都在简历里出现过，按实际技术栈拆分成四个模块。</p>
+					</div>
+					<div class="section-badge">C / 控制 / 通信 / 机电</div>
+				</header>
+
+				<div class="skills-grid">
+					{
+						skills.map((skill) => (
+							<article class="skill-card">
+								<h3>{skill.title}</h3>
+								<div class="skill-tags">
+									{skill.items.map((item) => <span>{item}</span>)}
+								</div>
+							</article>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="panel awards-panel">
+				<header class="section-header section-header-split">
+					<div>
+						<h2>获奖经历</h2>
+						<p>把奖项压缩成结果导向的展示，不占满版面但能快速读出硬指标。</p>
+					</div>
+					<div class="section-badge">8 项节选</div>
+				</header>
+
+				<ul class="awards-list">
+					{awards.map((award) => <li>{award}</li>)}
+				</ul>
+			</section>
+		</main>
+
+		<div class="wrapper cta-wrap">
+			<CallToAction href="/about/">
+				查看完整个人介绍
+				<Icon icon="arrow-right" size="1.2em" />
+			</CallToAction>
+		</div>
+
+		<ContactCTA />
+	</div>
+</BaseLayout>
 
 <style>
-	:global(*) {
-		box-sizing: border-box;
+	.resume-page {
+		position: relative;
 	}
 
-	.page {
-		position: relative;
-		overflow-x: hidden;
-		padding: 0;
+	.resume-page::before {
+		position: fixed;
+		inset: 0;
+		content: '';
+		pointer-events: none;
+		background:
+			radial-gradient(circle at 12% 12%, rgba(255, 123, 0, 0.16), transparent 30%),
+			radial-gradient(circle at 88% 18%, rgba(157, 166, 177, 0.1), transparent 28%),
+			linear-gradient(180deg, rgba(0, 0, 0, 0.02), transparent 28%);
+		mask-image: linear-gradient(180deg, black 0%, black 75%, transparent 100%);
 	}
 
 	.hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.3fr) minmax(18rem, 0.7fr);
+		gap: 1.5rem;
+		padding-top: 2.75rem;
+		padding-bottom: 1.5rem;
+		align-items: stretch;
+	}
+
+	.hero-copy,
+	.profile-card,
+	.panel {
 		position: relative;
-		min-height: 100svh;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		padding: 1.2rem 3vw 2.4rem;
+		border: 1px solid var(--gray-800);
+		border-radius: 1.75rem;
+		background: linear-gradient(180deg, rgba(12, 15, 19, 0.78), rgba(12, 15, 19, 0.92));
+		box-shadow: var(--shadow-lg);
+		backdrop-filter: blur(10px);
+	}
+
+	.hero-copy {
+		padding: 2.25rem;
 		overflow: hidden;
 	}
 
-	.hero-media,
-	.hero-media video,
-	.hero-mask {
+	.hero-copy::after {
 		position: absolute;
-		inset: 0;
-	}
-
-	.hero-media video {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		opacity: 0.6;
-		filter: saturate(1.02) brightness(0.7) contrast(1.05);
-		transform: scale(1.04);
-	}
-
-	.hero-mask {
-		background:
-			linear-gradient(180deg, rgba(3, 8, 18, 0.18) 0%, rgba(2, 6, 15, 0.72) 70%, rgba(2, 6, 15, 0.96) 100%),
-			radial-gradient(circle at 16% 22%, rgba(132, 173, 226, 0.2), transparent 34%),
-			radial-gradient(circle at 76% 13%, rgba(255, 177, 177, 0.2), transparent 30%);
-	}
-
-	.topbar {
-		position: relative;
-		z-index: 3;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 1rem;
-		padding: 0.65rem 0.9rem;
-		border: 1px solid rgba(219, 231, 255, 0.16);
-		border-radius: 999px;
-		background: rgba(6, 12, 24, 0.34);
-		backdrop-filter: blur(16px);
-		animation: enter 700ms ease both;
-	}
-
-	.brand {
-		display: flex;
-		align-items: center;
-		gap: 0.65rem;
-	}
-
-	.brand p,
-	.brand strong,
-	.section-head p,
-	.card-top p,
-	.card-top span,
-	.eyebrow,
-	.lede,
-	.description,
-	.telemetry span,
-	.telemetry strong {
-		margin: 0;
-	}
-
-	.brand p,
-	.eyebrow,
-	.section-head p,
-	.card-top span {
-		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
-		font-size: 0.7rem;
-		letter-spacing: 0.26em;
-		text-transform: uppercase;
-		color: rgba(227, 238, 255, 0.6);
-	}
-
-	.brand strong {
-		display: block;
-		font-size: 0.95rem;
-		letter-spacing: 0.03em;
-		text-transform: uppercase;
-	}
-
-	.brand-dot {
-		width: 0.7rem;
-		height: 0.7rem;
-		border-radius: 999px;
-		background: radial-gradient(circle, #ebf6ff 0%, #90cbff 90%);
-		box-shadow: 0 0 24px rgba(146, 201, 255, 0.8);
-	}
-
-	.nav {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-end;
-		gap: 0.4rem;
-	}
-
-	.nav a {
-		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
-		padding: 0.45rem 0.8rem;
-		border-radius: 999px;
-		border: 1px solid transparent;
-		background: transparent;
-		color: rgba(237, 243, 255, 0.58);
-		font-size: 0.8rem;
-		letter-spacing: 0.08em;
-		text-decoration: none;
-		white-space: nowrap;
-		transition:
-			transform 180ms ease,
-			color 180ms ease,
-			border-color 180ms ease,
-			background 180ms ease;
-	}
-
-	.nav a:hover {
-		color: #f4f8ff;
-		border-color: rgba(208, 224, 255, 0.26);
-		background: rgba(229, 239, 255, 0.08);
-	}
-
-	.hero-content {
-		position: relative;
-		z-index: 2;
-		max-width: min(64rem, 100%);
-		margin-top: auto;
-		padding-bottom: min(6vh, 3rem);
-		animation: rise 850ms ease both;
+		inset: auto -4rem -5rem auto;
+		content: '';
+		width: 14rem;
+		height: 14rem;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(255, 123, 0, 0.28), transparent 68%);
+		filter: blur(4px);
 	}
 
 	.eyebrow {
-		margin-bottom: 0.95rem;
-		color: rgba(232, 239, 255, 0.76);
-	}
-
-	h1 {
-		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
-		margin: 0;
-		max-width: 10ch;
-		font-size: clamp(2.7rem, 7vw, 6rem);
-		line-height: 0.94;
-		letter-spacing: -0.045em;
-		text-wrap: balance;
+		margin-bottom: 1rem;
+		color: var(--accent-light);
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
 		text-transform: uppercase;
+		letter-spacing: 0.12em;
 	}
 
-	.lede {
-		max-width: 38rem;
-		margin-top: 1rem;
+	.hero h1 {
+		margin: 0;
+		font-size: clamp(3rem, 7vw, 5.8rem);
+		line-height: 0.95;
+		letter-spacing: -0.05em;
+		color: var(--gray-0);
+	}
+
+	.lead {
+		max-width: 42rem;
+		margin-top: 1.25rem;
+		font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+		line-height: 1.75;
+		color: var(--gray-300);
+	}
+
+	.hero-highlights {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.85rem;
+		margin-top: 1.75rem;
+	}
+
+	.highlight-chip {
+		padding: 0.9rem 1rem;
+		border-radius: 1rem;
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.highlight-chip span {
+		display: block;
+		margin-bottom: 0.35rem;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gray-400);
+	}
+
+	.highlight-chip strong {
 		font-size: 0.98rem;
-		line-height: 1.85;
-		color: rgba(223, 232, 248, 0.76);
+		font-weight: 600;
+		color: var(--gray-0);
 	}
 
 	.hero-actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.65rem;
-		margin-top: 1.4rem;
+		gap: 0.9rem;
+		margin-top: 1.8rem;
+		align-items: center;
 	}
 
-	.primary,
-	.ghost {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.78rem 1.1rem;
-		border-radius: 999px;
-		text-decoration: none;
-		font-size: 0.82rem;
-		font-weight: 600;
+	.hero-actions :global(a) {
+		padding: 0.8rem 1.3rem;
+		font-size: 0.98rem;
+		box-shadow: 0 18px 45px rgba(255, 123, 0, 0.18);
+	}
+
+	.hero-actions :global(a:last-child) {
+		background: rgba(255, 255, 255, 0.04);
+		color: var(--gray-0);
+		border: 1px solid rgba(255, 255, 255, 0.09);
+		box-shadow: none;
+	}
+
+	.profile-card {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		min-height: 100%;
+	}
+
+	.profile-portrait {
+		display: flex;
+		flex-direction: column;
+		justify-content: end;
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		padding: 1.5rem;
+		background:
+			radial-gradient(circle at 20% 20%, rgba(255, 123, 0, 0.32), transparent 34%),
+			radial-gradient(circle at 80% 25%, rgba(157, 166, 177, 0.18), transparent 28%),
+			linear-gradient(160deg, #171921 0%, #0d0f13 52%, #1e1410 100%);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.profile-portrait::before {
+		position: absolute;
+		inset: 12% 10% auto auto;
+		content: '';
+		width: 11rem;
+		height: 11rem;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(255, 255, 255, 0.09), transparent 68%);
+		filter: blur(3px);
+		opacity: 0.8;
+	}
+
+	.portrait-mark {
+		position: relative;
+		z-index: 1;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		line-height: 1;
+		letter-spacing: -0.05em;
+		font-weight: 700;
+		color: var(--gray-0);
+	}
+
+	.portrait-sub {
+		position: relative;
+		z-index: 1;
+		margin-top: 0.45rem;
+		color: var(--gray-300);
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.profile-card img {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.profile-meta {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		padding: 1.25rem;
+	}
+
+	.profile-meta span {
+		display: block;
+		margin-bottom: 0.35rem;
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
-		transition:
-			transform 180ms ease,
-			border-color 180ms ease,
-			background 180ms ease,
-			color 180ms ease;
+		color: var(--gray-400);
 	}
 
-	.primary {
-		color: #06121b;
-		background: linear-gradient(135deg, #eff7ff 0%, #bddfff 100%);
-		box-shadow: 0 14px 40px rgba(99, 151, 218, 0.38);
+	.profile-meta strong {
+		color: var(--gray-0);
+		font-size: 0.95rem;
+		line-height: 1.4;
 	}
 
-	.ghost {
-		border: 1px solid rgba(227, 237, 255, 0.26);
-		color: rgba(246, 250, 255, 0.88);
-		background: rgba(255, 255, 255, 0.06);
+	.resume-main {
+		padding-bottom: 1rem;
 	}
 
-	.primary:hover,
-	.ghost:hover {
-		transform: translateY(-2px);
+	.panel {
+		padding: 1.5rem;
+		margin-bottom: 1rem;
 	}
 
-	.telemetry {
-		position: relative;
-		z-index: 2;
+	.section-header {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-bottom: 1.35rem;
+	}
+
+	.section-header h2 {
+		margin: 0;
+		font-size: clamp(1.5rem, 3vw, 2.4rem);
+		color: var(--gray-0);
+	}
+
+	.section-header p {
+		margin: 0;
+		max-width: 68ch;
+		font-family: var(--font-body);
+		color: var(--gray-400);
+	}
+
+	.section-header-split {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: end;
+		gap: 1rem;
+	}
+
+	.section-badge {
+		padding: 0.55rem 0.85rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(255, 255, 255, 0.03);
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gray-300);
+		white-space: nowrap;
+	}
+
+	.intro-grid {
+		display: grid;
+		grid-template-columns: 0.95fr 1.05fr;
+		gap: 1.25rem;
+	}
+
+	.intro-cards {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.intro-grid > .quick-facts {
+		align-self: start;
+	}
+
+	.mini-card {
+		padding: 1rem;
+		border-radius: 1rem;
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.mini-card h3,
+	.timeline-card h3,
+	.skill-card h3 {
+		margin: 0 0 0.55rem;
+		color: var(--gray-0);
+		font-size: 1.05rem;
+	}
+
+	.mini-card p {
+		margin: 0;
+		color: var(--gray-300);
+		line-height: 1.65;
+	}
+
+	.quick-facts {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 0.9rem;
-		margin-top: 0.6rem;
-		animation: rise 900ms ease both;
+		gap: 0.85rem;
+		padding: 0;
+		margin: 0;
+		list-style: none;
 	}
 
-	.telemetry div {
-		padding: 0.85rem 1rem;
-		border: 1px solid rgba(199, 216, 247, 0.2);
-		border-radius: 0.75rem;
-		background: rgba(7, 15, 29, 0.38);
-		backdrop-filter: blur(12px);
+	.quick-facts li {
+		padding: 0.9rem 1rem;
+		border-radius: 1rem;
+		background: linear-gradient(180deg, rgba(255, 123, 0, 0.08), rgba(255, 255, 255, 0.03));
+		border: 1px solid rgba(255, 123, 0, 0.18);
+		color: var(--gray-200);
+		line-height: 1.6;
 	}
 
-	.telemetry span {
-		display: block;
-		font-size: 0.64rem;
-		letter-spacing: 0.2em;
-		color: rgba(224, 235, 255, 0.58);
-		text-transform: uppercase;
-	}
-
-	.telemetry strong {
-		font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
-		display: block;
-		margin-top: 0.2rem;
-		font-size: 0.95rem;
-		letter-spacing: 0.08em;
-		color: #f4f9ff;
-	}
-
-	.projects {
-		position: relative;
-		z-index: 2;
-		padding: 3.2rem 3vw 4rem;
-		background:
-			linear-gradient(180deg, rgba(2, 6, 15, 0.86) 0%, rgba(2, 7, 16, 0.98) 100%),
-			radial-gradient(circle at 18% -2%, rgba(102, 139, 194, 0.2), transparent 44%);
-	}
-
-	.section-head {
-		max-width: 46rem;
-		margin: 0 auto 1.4rem;
-	}
-
-	.section-head h2 {
-		margin: 0.6rem 0 0;
-		font-size: clamp(1.8rem, 3.2vw, 3.1rem);
-		line-height: 1.12;
-		letter-spacing: -0.03em;
-		text-wrap: balance;
-	}
-
-	.grid {
-		max-width: 84rem;
-		margin: 0 auto;
+	.timeline {
 		display: grid;
-		grid-template-columns: repeat(12, minmax(0, 1fr));
-		gap: 1.05rem;
+		gap: 1rem;
 	}
 
-	.card {
-		grid-column: span 6;
-		padding: 1.4rem 1.3rem 1.45rem;
-		border: 1px solid rgba(208, 224, 255, 0.18);
-		border-radius: 1.05rem;
-		background:
-			linear-gradient(180deg, rgba(20, 31, 50, 0.6), rgba(11, 18, 30, 0.82)),
-			radial-gradient(circle at top left, rgba(191, 219, 255, 0.14), transparent 42%);
-		backdrop-filter: blur(20px);
-		box-shadow:
-			0 20px 50px rgba(0, 0, 0, 0.25),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
-		transition: transform 250ms ease, border-color 250ms ease;
+	.timeline-card {
+		padding: 1.1rem 1.15rem;
+		border-radius: 1.1rem;
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
-	.card:hover {
-		transform: translateY(-3px);
-		border-color: rgba(228, 239, 255, 0.34);
-	}
-
-	.card-top {
+	.timeline-head {
 		display: flex;
 		justify-content: space-between;
 		gap: 1rem;
-		align-items: flex-start;
+		align-items: start;
+		margin-bottom: 0.8rem;
 	}
 
-	.card-top p {
-		font-size: 0.78rem;
-		letter-spacing: 0.15em;
-		color: rgba(187, 216, 255, 0.88);
+	.timeline-org {
+		margin: 0 0 0.35rem;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent-light);
 	}
 
-	.card h3 {
-		margin: 0.95rem 0 0.65rem;
-		font-size: clamp(1.28rem, 2.1vw, 1.65rem);
-		line-height: 1.2;
-		letter-spacing: -0.025em;
+	.timeline-period {
+		padding: 0.4rem 0.65rem;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.05);
+		color: var(--gray-300);
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		white-space: nowrap;
 	}
 
-	.description {
-		font-size: 0.95rem;
-		line-height: 1.72;
-		color: rgba(223, 231, 247, 0.78);
+	.timeline-card ul {
+		margin: 0;
+		padding-left: 1.25rem;
+		color: var(--gray-300);
+		line-height: 1.7;
 	}
 
-	.chips {
+	.skills-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.skill-card {
+		padding: 1rem;
+		border-radius: 1rem;
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.skill-tags {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.6rem;
-		margin-top: 1.1rem;
 	}
 
-	.chips span {
-		padding: 0.4rem 0.68rem;
-		border-radius: 0.45rem;
-		border: 1px solid rgba(207, 224, 255, 0.14);
+	.skill-tags span {
+		padding: 0.35rem 0.65rem;
+		border-radius: 999px;
+		background: rgba(255, 123, 0, 0.08);
+		border: 1px solid rgba(255, 123, 0, 0.12);
+		color: var(--gray-200);
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+	}
+
+	.awards-list {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem 1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.awards-list li {
+		padding: 0.8rem 0.95rem;
+		border-radius: 0.9rem;
 		background: rgba(255, 255, 255, 0.03);
-		color: rgba(235, 243, 255, 0.75);
-		font-size: 0.76rem;
-		letter-spacing: 0.04em;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		color: var(--gray-300);
+		line-height: 1.55;
 	}
 
-	@keyframes enter {
-		from {
-			opacity: 0;
-			transform: translateY(-8px);
-		}
-
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	.preview-tags {
+		font-family: var(--font-mono);
+		color: var(--gray-300);
+		text-transform: uppercase;
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
 	}
 
-	@keyframes rise {
-		from {
-			opacity: 0;
-			transform: translateY(16px);
-		}
-
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	.read-more {
+		color: var(--accent-light);
+		font-weight: 700;
+		font-size: 0.9rem;
+		letter-spacing: 0.05em;
 	}
 
-	@media (max-width: 1080px) {
+	.cta-wrap {
+		display: flex;
+		justify-content: center;
+		margin-top: 0.5rem;
+		padding-bottom: 1rem;
+	}
+
+	@media (min-width: 50em) {
 		.hero {
-			padding: 1rem 1rem 1.8rem;
+			padding-top: 3.5rem;
+			padding-bottom: 2rem;
 		}
 
-		.card {
-			grid-column: span 12;
+		.panel {
+			padding: 1.8rem;
 		}
 
-		.telemetry {
-			grid-template-columns: 1fr;
-			max-width: 36rem;
+		.profile-meta {
+			grid-template-columns: 1fr 1fr;
 		}
 	}
 
-	@media (max-width: 720px) {
-		.topbar {
+	@media (max-width: 50em) {
+		.hero,
+		.section-header-split,
+		.timeline-head {
+			grid-template-columns: 1fr;
 			flex-direction: column;
-			align-items: flex-start;
-			border-radius: 1rem;
+			align-items: start;
 		}
 
-		.nav {
-			justify-content: flex-start;
+		.hero {
+			padding-top: 2rem;
 		}
 
-		.nav a {
-			padding: 0.45rem 0.55rem;
-			font-size: 0.73rem;
+		.hero-highlights,
+		.intro-grid,
+		.intro-cards,
+		.quick-facts,
+		.skills-grid,
+		.awards-list {
+			grid-template-columns: 1fr;
 		}
 
-		h1 {
-			font-size: clamp(2.4rem, 15vw, 3.4rem);
+		.intro-grid {
+			grid-template-columns: 1fr;
 		}
 
-		.hero-content {
-			padding-bottom: 1.4rem;
-		}
-
-		.projects {
-			padding: 2.5rem 1rem 3rem;
+		.profile-meta {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

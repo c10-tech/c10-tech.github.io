@@ -1,0 +1,46 @@
+﻿---
+import { getCollection } from 'astro:content';
+import ContactCTA from '../components/ContactCTA.astro';
+import Grid from '../components/Grid.astro';
+import Hero from '../components/Hero.astro';
+import PortfolioPreview from '../components/PortfolioPreview.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projectsRaw = await getCollection('work');
+const desiredOrder = ['rm26-sentry', 'infantry', 'rm25-sentry', 'rm25-sentry-single', 'rm25-infantry', 'hexapod'];
+const projectsById = new Map(projectsRaw.map((project) => [project.id, project]));
+const projects = desiredOrder
+	.map((id) => projectsById.get(id))
+	.filter((project): project is NonNullable<typeof project> => Boolean(project));
+
+const cardLayout = {
+	'rm26-sentry': { span: 4, rowSpan: 2, ratio: 'square', style: 'grid-column: 1 / span 4; grid-row: 1 / span 2;' },
+	'infantry': { span: 2, rowSpan: 1, ratio: 'square', style: 'grid-column: 5 / span 2; grid-row: 1 / span 1;' },
+	'rm25-sentry': { span: 4, rowSpan: 2, ratio: 'square', style: 'grid-column: 3 / span 4; grid-row: 3 / span 2;' },
+	'rm25-infantry': { span: 2, rowSpan: 1, ratio: 'wide', style: 'grid-column: 1 / span 2; grid-row: 4 / span 1;' },
+	'rm25-sentry-single': { span: 2, rowSpan: 1, ratio: 'square', style: 'grid-column: 5 / span 2; grid-row: 2 / span 1;' },
+	'hexapod': { span: 2, rowSpan: 1, ratio: 'wide', style: 'grid-column: 1 / span 2; grid-row: 3 / span 1;' },
+} as const;
+---
+
+<BaseLayout title="核心技术研究与作品">
+	<div class="stack gap-20">
+		<main class="wrapper stack gap-8">
+			<Hero title="核心技术研究与作品" tagline="探索我在机械、控制与嵌入式方向的实战项目与技术细节。" align="start" />
+			<Grid variant="bento">
+				{
+					projects.map((project) => (
+						<PortfolioPreview
+							project={project}
+							span={cardLayout[project.id as keyof typeof cardLayout]?.span}
+							rowSpan={cardLayout[project.id as keyof typeof cardLayout]?.rowSpan}
+							ratio={cardLayout[project.id as keyof typeof cardLayout]?.ratio}
+							style={cardLayout[project.id as keyof typeof cardLayout]?.style}
+						/>
+					))
+				}
+			</Grid>
+		</main>
+		<ContactCTA />
+	</div>
+</BaseLayout>
